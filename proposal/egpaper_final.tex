@@ -1,0 +1,108 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{CJKutf8}
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{1}
+\begin{document}
+\begin{CJK}{UTF8}{bsmi}
+
+%%%%%%%%% TITLE
+\title{Auto Turn Sheet Music}
+
+\author{林郁翔\\
+P76094509\\
+{\tt\small richardlin0212@gmail.com}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+方嘉祥\\
+P76094151\\
+{\tt\small frank870622@gmail.com}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+   For a song played for the first time, you usually need to look at the music score to play, and most music scores are not only one page, so you must turn the music score when you are about to finish playing a page.
+
+   We want to develop a software that can automatically scroll the guitar tablature with the progress of the music according to the input music or video.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+
+Anyone who has experience in playing musical instruments knows that most musical instruments require both hands to play.
+Most musical scores have more than one page, so when you are about to finish one page, you must turn the score.
+For paper scores, you can line up the scores without turning pages, but if you want to see all the scores on electronic scores, you must reduce the scores to a small size, and scores that are too small can’t be seen at all.
+
+When practicing guitar, if it is not a self-created piece or a piece of self-arranged piece, it is usually played with the existing music, usually a popular music film. If you only list the chords, most of them don’t need to turn pages, but the guitar tabs that pay more attention to fingering are usually presented in the form of six-line tabs, corresponding to the first to sixth strings of the guitar from top to bottom(Figure ~\ref{fig:guitar}). At this time, the number of sheet music pages will rise sharply, and the number of times the sheet music will be flipped will also increase significantly. At this time, if you are practicing against existing music, you will interrupt the practice when you turn the page, or you want to focus on practicing a certain paragraph, you need to turn the score to the position at the same time, and the music must be fixed to a certain place, which is a waste of time .
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{2.png}
+\end{center}
+   \caption{Example of Guitar Tabs}
+\label{fig:long}
+\label{fig:guitar}
+\end{figure}
+
+We want to develop a software that can automatically scroll the score with the progress of the music according to the input guitar music or video, and in conjunction with the input score. Existing software requires a certain format (gp5, midi) to perform related work. We want to analyze the most common pdf and scroll the scores stored in the pdf according to the music. We also hope that users can pause the music at any time, or adjust the music to an appropriate position, and the score will also reach the correct paragraph.
+
+%------------------------------------------------------------------------
+\section{System framework}
+
+We will read the tablature in PDF format and record them as gp5 format. When inputting music later, we can automatically detect the beat and pitch, find out the position of the current tablatures, and then scroll the tablature with the music(Figure ~\ref{fig:step1}). On the other hand, we also use the current tablature passages to play the corresponding music.
+
+\begin{figure*}
+\begin{center}
+\includegraphics[width=.9\linewidth]{step1.png}
+\end{center}
+   \caption{System framework.}
+\label{fig:step}
+\end{figure*}
+
+%------------------------------------------------------------------------
+\section{Expected results}
+
+We hope to do like Tonara\cite{Tonara}, which scrolls sheet music automatically.(Figure ~\ref{fig:tonara}) We also want our application to play music according to the current cursor on the tablature. When the user pauses or moves the cursor of the tablature, our application will play the music according to it. Just like what guitar pro can do.(Figure ~\ref{fig:gp})
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{tonara.png}
+\end{center}
+   \caption{Example Tonara\cite{Tonara2}}
+\label{fig:long}
+\label{fig:tonara}
+\end{figure}
+
+{\small
+\bibliographystyle{ieee_fullname}
+\bibliography{egbib}
+}
+
+\end{CJK}
+\end{document}
