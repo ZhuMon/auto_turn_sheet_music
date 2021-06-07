@@ -1,6 +1,8 @@
 #! /usr/bin/env python3
 
 import sys
+import math
+import numpy as np
 from aubio import tempo, source
 
 
@@ -38,9 +40,10 @@ def detect_tempo(file_name):
     for i in range(len(beats)-1):
         bpms.append(60 / ((beats[i+1] - beats[i]) / float(samplerate)))
 
-    print(sum(bpms)/len(bpms))
-
-    # print(len(beats))
+    # bpm = np.mean(bpms)
+    bpm = math.floor(np.median(bpms))
+    print(bpm)
+    return bpm
 
 def gpx2wav(file_name):
     pass
