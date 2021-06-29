@@ -1,0 +1,196 @@
+\documentclass[10pt,twocolumn,letterpaper]{article}
+
+\usepackage{cvpr}
+\usepackage{times}
+\usepackage{epsfig}
+\usepackage{graphicx}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{CJKutf8}
+% Include other packages here, before hyperref.
+
+% If you comment hyperref and then uncomment it, you should delete
+% egpaper.aux before re-running latex.  (Or just hit 'q' on the first latex
+% run, let it finish, and you should be clear).
+\usepackage[breaklinks=true,bookmarks=false]{hyperref}
+
+\cvprfinalcopy % *** Uncomment this line for the final submission
+
+\def\cvprPaperID{****} % *** Enter the CVPR Paper ID here
+\def\httilde{\mbox{\tt\raisebox{-.5ex}{\symbol{126}}}}
+
+% Pages are numbered in submission mode, and unnumbered in camera-ready
+%\ifcvprfinal\pagestyle{empty}\fi
+\setcounter{page}{1}
+\begin{document}
+\begin{CJK}{UTF8}{bsmi}
+
+%%%%%%%%% TITLE
+\title{Auto Turn Sheet Music}
+
+\author{林郁翔\\
+P76094509\\
+{\tt\small richardlin0212@gmail.com}
+% For a paper whose authors are all at the same institution,
+% omit the following lines up until the closing ``}''.
+% Additional authors and addresses can be added with ``\and'',
+% just like the second author.
+% To save space, use either the email address or home page, not both
+\and
+方嘉祥\\
+P76094151\\
+{\tt\small frank870622@gmail.com}
+}
+
+\maketitle
+%\thispagestyle{empty}
+
+%%%%%%%%% ABSTRACT
+\begin{abstract}
+   For a song played for the first time, you usually need to look at the music score to play, and most music scores are not only one page, so you must turn the music score when you are about to finish playing a page.
+
+   We want to develop a software that can automatically scroll the guitar tablature with the progress of the music according to the input music or video.
+\end{abstract}
+
+%%%%%%%%% BODY TEXT
+\section{Introduction}
+
+Anyone who has experience in playing musical instruments knows that most musical instruments require both hands to play.
+Most musical scores have more than one page, so when you are about to finish one page, you must turn the score.
+For paper scores, you can line up the scores without turning pages, but if you want to see all the scores on electronic scores, you must reduce the scores to a small size, and scores that are too small can’t be seen at all.
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{2.png}
+\end{center}
+   \caption{Example of Guitar Tabs}
+\label{fig:long}
+\label{fig:guitar}
+\end{figure}
+
+When practicing guitar, if it is not a self-created piece or a piece of self-arranged piece, it is usually played with the existing music, usually a popular music film. If you only list the chords, most of them don’t need to turn pages, but the guitar tabs that pay more attention to fingering are usually presented in the form of six-line tabs, corresponding to the first to sixth strings of the guitar from top to bottom(Figure ~\ref{fig:guitar}). At this time, the number of sheet music pages will rise sharply, and the number of times the sheet music will be flipped will also increase significantly. At this time, if you are practicing against existing music, you will interrupt the practice when you turn the page, or you want to focus on practicing a certain paragraph, you need to turn the score to the position at the same time, and the music must be fixed to a certain place, which is a waste of time .
+
+
+
+We want to develop a software that can automatically scroll the score with the progress of the music according to the input guitar music or video, and in conjunction with the input score. Existing software requires a certain format (gp5, midi) to perform related work. We want to analyze the most common pdf and scroll the scores stored in the pdf according to the music. We also hope that users can pause the music at any time, or adjust the music to an appropriate position, and the score will also reach the correct paragraph.
+
+%------------------------------------------------------------------------
+\section{Related works}
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{relate_works_1.png}
+\end{center}
+   \caption{Six-line score}
+\label{fig:relate_works_1}
+\end{figure}
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{relate_works_2.png}
+\end{center}
+   \caption{MIDI example}
+\label{fig:relate_works_2}
+\end{figure}
+
+A six-line score is a kind of music score that records how a stringed instrument is played. From top to bottom, each line corresponds to the first to sixth strings of the guitar. The number on the line indicates the number of bars on the string to be played.(Figure ~\ref{fig:relate_works_1}).
+
+MIDI numbers are a way to define notes by numbers, each semitone is regarded as a degree, A0 is 21, A \# 0 is 22, and so on(Figure ~\ref{fig:relate_works_2}).
+
+
+%------------------------------------------------------------------------
+\section{Method}
+
+\subsection{Music score recognition method}
+\begin{description}
+\item 1. First identify the position of the hexagram.
+\item 2. Identify the numbers, identify each type of number once, and delete the out-of-range results by the position of the staves.
+\item 3. Sort all the numerical results found according to their position.
+\item 4. Identify the position of each line in the staves, and mark which line and paragraph the number is on.
+\item 5. Finally, you can know which page, row, and number each number is on.
+\end{description}
+
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{method_1.png}
+\end{center}
+   \caption{Six-line score}
+\label{fig:method_1}
+\end{figure}
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{method_2.png}
+\end{center}
+   \caption{MIDI example}
+\label{fig:method_2}
+\end{figure}
+
+
+The way we identify the score is to use the existing small pictures, and compare each small part of the entire score in a translation mode to see if there are similar images(Figure ~\ref{fig:method_1})(Figure ~\ref{fig:method_2}).
+
+As for the method of identifying the position of each line of the hexagram, taking the first string as an example, we use the position with the largest number of "first encounters that are not white from top to bottom" as the first string.
+
+\subsection{Pitch recognition}
+
+We use aubio, an open source code, for identification. The original topic was expected to use existing music for identification, but the results of the experiment were not good, so we changed to identify the input music in real time.
+
+We use pyaudio to receive the microphone signal from the computer, and then use aubio to determine the pitch of the input sound, and then aubio will convert the sound to a MIDI Number, and finally we will compare it with the notes of the score.
+
+%------------------------------------------------------------------------
+\section{Experimental results}
+
+
+We read multiple pictures of the staves at one time to identify the notes on the staves, that is, analyze the numbers and positions in the staves.
+
+We divide the scores of each sheet into different lines and display them on the GUI. The user can play the guitar. After the program recognizes the correct pitch, the score on the GUI will automatically scroll.
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{system_framework.png}
+\end{center}
+   \caption{System Framework}
+\label{fig:long}
+\label{fig:system_framework}
+\end{figure}
+
+\subsection{System Framework}
+
+Our experimental architecture is shown in the figure(Figure ~\ref{fig:system_framework}).
+
+\subsection{GUI usage}
+
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.8\linewidth]{gui.png}
+\end{center}
+   \caption{GUI}
+\label{fig:gui}
+\end{figure}
+
+How to use the GUI is explained by numbers (Figure ~\ref{fig:gui}).
+
+\begin{description}
+\item 1. The red circle indicates which note is currently.
+\item 2. Show the current score.
+\item 3. Back the red circle one space.
+\item 4. Move the red circle one step forward.
+\item 5. Start to recognize the music mode.
+\item 6. Stop recognizing music mode.
+\end{description}
+
+When the red circle moves to the end of the score, it will automatically switch to the next page, and you can use the “back” and “next” buttons to manually move the position of the red circle.
+
+Music recognition mode can recognize the input music and automatically change the position of the red circle.
+
+%------------------------------------------------------------------------
+\section{Conclusion}
+
+When recognizing pitch, aubio uses “confidence” as the basis for judging whether it is a note, but from the perspective of human hearing, some notes do not exist, or clearly exist but “confidence” is much lower than other notes’ " confidence".
+
+Although our program can recognize music notes, it is still affected by other sounds, such as environmental sounds or human voices. In the pitch recognition part, we still need more room for improvement. In addition, if the GUI can provide more Multi-line music scores should be able to be closer to the needs of users.
+
+
+\end{CJK}
+\end{document}
