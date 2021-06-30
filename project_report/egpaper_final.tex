@@ -47,7 +47,7 @@ P76094151\\
 
 %%%%%%%%% ABSTRACT
 \begin{abstract}
-   For a song played for the first time, you usually need to look at the music score to play, and most music scores are not only one page, so you must turn the music score when you are about to finish playing a page.
+   For a song you played for the first time, you usually need to look at the sheet music to play, and most pile of sheet music are not only one page, so you must turn page when you are about to finish playing the page.
 
    We want to develop a software that can automatically scroll the guitar tablature with the progress of the music according to the input music or video.
 \end{abstract}
@@ -55,24 +55,49 @@ P76094151\\
 %%%%%%%%% BODY TEXT
 \section{Introduction}
 
-Anyone who has experience in playing musical instruments knows that most musical instruments require both hands to play.
-Most musical scores have more than one page, so when you are about to finish one page, you must turn the score.
-For paper scores, you can line up the scores without turning pages, but if you want to see all the scores on electronic scores, you must reduce the scores to a small size, and scores that are too small can’t be seen at all.
+Anyone who has experience in playing musical instruments knows that most musical instruments require both hands to play. 
+Most pile of sheet music have more than one page, so when you are about to finish one page, you must turn a page. 
+For paper-made sheet music, you can line up the papers without turning pages, but if you want to see all the sheet music on electronic scores, you must reduce the sheet music to a small size, and notes are too small to see.
+
+%\begin{figure}[t]
+%\begin{center}
+   %\includegraphics[width=0.8\linewidth]{2.png}
+%\end{center}
+   %\caption{Example of Guitar Tabs}
+%\label{fig:long}
+%\label{fig:guitar}
+%\end{figure}
+
+When practicing guitar, if it is not a self-created piece or a covered song, it is usually played with the existing music, usually a popular music film.
+If you only list the chords, most of them don’t need to turn pages, but the guitar tabs that pay more attention to fingering are usually presented in the form of six-line tabs, tablatures, corresponding to the first to sixth strings of the guitar from top to bottom. 
+Tablature may present in many aspects. 
+It can come with five-line staff(Figure ~\ref{fig:tab1}), or show alone(Figure ~\ref{fig:tab2}). 
+At this time, the number of tablature pages will rise quickly, and the number of times the sheet music will be flipped will also increase significantly. 
+Also, if you are practicing against existing music, you will interrupt the practice when you turn the page. 
+Or you want to focus on practicing a certain paragraph, you need to turn the sheet music to the position at the same time, and the music must be fixed to a certain place, which is a waste of time .
 
 \begin{figure}[t]
 \begin{center}
-   \includegraphics[width=0.8\linewidth]{2.png}
+   \includegraphics[width=0.9\linewidth]{tablature.png}
 \end{center}
-   \caption{Example of Guitar Tabs}
+\caption{Example of Guitar Tabs with staff\cite{river_flows_in_you}}
 \label{fig:long}
-\label{fig:guitar}
+\label{fig:tab1}
 \end{figure}
 
-When practicing guitar, if it is not a self-created piece or a piece of self-arranged piece, it is usually played with the existing music, usually a popular music film. If you only list the chords, most of them don’t need to turn pages, but the guitar tabs that pay more attention to fingering are usually presented in the form of six-line tabs, corresponding to the first to sixth strings of the guitar from top to bottom(Figure ~\ref{fig:guitar}). At this time, the number of sheet music pages will rise sharply, and the number of times the sheet music will be flipped will also increase significantly. At this time, if you are practicing against existing music, you will interrupt the practice when you turn the page, or you want to focus on practicing a certain paragraph, you need to turn the score to the position at the same time, and the music must be fixed to a certain place, which is a waste of time .
+\begin{figure}[t]
+\begin{center}
+   \includegraphics[width=0.9\linewidth]{tab2.png}
+\end{center}
+\caption{Example of Guitar Tabs without staff\cite{small_universe}}
+\label{fig:long}
+\label{fig:tab2}
+\end{figure}
 
-
-
-We want to develop a software that can automatically scroll the score with the progress of the music according to the input guitar music or video, and in conjunction with the input score. Existing software requires a certain format (gp5, midi) to perform related work. We want to analyze the most common pdf and scroll the scores stored in the pdf according to the music. We also hope that users can pause the music at any time, or adjust the music to an appropriate position, and the score will also reach the correct paragraph.
+We want to develop a software that can automatically scroll the tablature with the progress of the music according to the input guitar music or video, and in conjunction with the input tablature.
+Existing software requires a certain format (gp5, midi) to perform related work. 
+We want to analyze the most common pdf and scroll the tablatures stored in the pdf according to the music. 
+We also hope that users can pause the music at any time, or adjust the music to an appropriate position, and the tablature will also reach the correct paragraph.
 
 %------------------------------------------------------------------------
 \section{Related works}
@@ -96,6 +121,12 @@ We want to develop a software that can automatically scroll the score with the p
 A six-line score is a kind of music score that records how a stringed instrument is played. From top to bottom, each line corresponds to the first to sixth strings of the guitar. The number on the line indicates the number of bars on the string to be played.(Figure ~\ref{fig:relate_works_1}).
 
 MIDI numbers are a way to define notes by numbers, each semitone is regarded as a degree, A0 is 21, A \# 0 is 22, and so on(Figure ~\ref{fig:relate_works_2}).
+
+Optical Music Recognition (OMR), also named Music Optical Character Recognition, is a technology that converts music scores into a computer-readable format\cite{omr_survey}. Allows people to perform many operations with electronic music scores. In fact, there are already many people studying this technology. OMR has also progressed from computer vision recognition to deep learning.
+Based on staff line of sheet music, \cite{staff_detection} tried to recognize hand-written sheet music.
+\cite{expert_system} turned sheet music to guitar tablature. He not only recognize sheet music but also generate guitar tablature. 
+A lot of people have tried to recognize staff, but few of them considered to recognize tablature.
+So, we tried to recognize tablature.
 
 
 %------------------------------------------------------------------------
@@ -138,7 +169,7 @@ We use aubio, an open source code, for identification. The original topic was ex
 
 We use pyaudio to receive the microphone signal from the computer, and then use aubio to determine the pitch of the input sound, and then aubio will convert the sound to a MIDI Number, and finally we will compare it with the notes of the score.
 
-%------------------------------------------------------------------------
+%---------------------------------- --------------------------------------
 \section{Experimental results}
 
 
@@ -187,7 +218,7 @@ Music recognition mode can recognize the input music and automatically change th
 %------------------------------------------------------------------------
 \section{Conclusion}
 
-When recognizing pitch, aubio uses “confidence” as the basis for judging whether it is a note, but from the perspective of human hearing, some notes do not exist, or clearly exist but “confidence” is much lower than other notes’ " confidence".
+When recognizing pitch, aubio uses 'confidence' as the basis for judging whether it is a note, but from the perspective of human hearing, some notes do not exist, or clearly exist but “confidence” is much lower than other notes' 'confidence'.
 
 Although our program can recognize music notes, it is still affected by other sounds, such as environmental sounds or human voices. In the pitch recognition part, we still need more room for improvement. In addition, if the GUI can provide more Multi-line music scores should be able to be closer to the needs of users.
 
