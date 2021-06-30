@@ -118,9 +118,9 @@ We also hope that users can pause the music at any time, or adjust the music to 
 \label{fig:relate_works_2}
 \end{figure}
 
-A six-line score is a kind of music score that records how a stringed instrument is played. From top to bottom, each line corresponds to the first to sixth strings of the guitar. The number on the line indicates the number of bars on the string to be played.(Figure ~\ref{fig:relate_works_1}).
+A tablature is a kind of music score that records how a stringed instrument is played. In this case, from top to bottom, each line corresponds to the first to sixth strings of the guitar. The number on the line indicates the number of bars on the string to be played.(Figure ~\ref{fig:relate_works_1}).
 
-MIDI numbers are a way to define notes by numbers, each semitone is regarded as a degree, A0 is 21, A \# 0 is 22, and so on(Figure ~\ref{fig:relate_works_2}).
+MIDI numbers are a way to define notes by numbers, each semitone is regarded as a degree, A0 is 21, A\#0 is 22, and so on(Figure ~\ref{fig:relate_works_2}).
 
 Optical Music Recognition (OMR), also named Music Optical Character Recognition, is a technology that converts music scores into a computer-readable format\cite{omr_survey}. Allows people to perform many operations with electronic music scores. In fact, there are already many people studying this technology. OMR has also progressed from computer vision recognition to deep learning.
 Based on staff line of sheet music, \cite{staff_detection} tried to recognize hand-written sheet music.
@@ -134,11 +134,11 @@ So, we tried to recognize tablature.
 
 \subsection{Music score recognition method}
 \begin{description}
-\item 1. First identify the position of the hexagram.
-\item 2. Identify the numbers, identify each type of number once, and delete the out-of-range results by the position of the staves.
-\item 3. Sort all the numerical results found according to their position.
-\item 4. Identify the position of each line in the staves, and mark which line and paragraph the number is on.
-\item 5. Finally, you can know which page, row, and number each number is on.
+\item 1. First we identify the position of the tablature.
+\item 2. Then we identify each type of number once, and delete the out-of-range results by the position of the tablature we recognized.
+\item 3. According to the ordering of notes on tablature, we sort all the numerical results found.
+\item 4. We then identify the position of each line in the tablature, and mark which line and paragraph the number is on.
+\item 5. Finally, we can know which page, row, and number each number is on.
 \end{description}
 
 
@@ -154,7 +154,7 @@ So, we tried to recognize tablature.
 \begin{center}
    \includegraphics[width=0.8\linewidth]{method_2.png}
 \end{center}
-   \caption{MIDI example}
+   \caption{Find the number on lines}
 \label{fig:method_2}
 \end{figure}
 
@@ -165,9 +165,11 @@ As for the method of identifying the position of each line of the hexagram, taki
 
 \subsection{Pitch recognition}
 
-We use aubio, an open source code, for identification. The original topic was expected to use existing music for identification, but the results of the experiment were not good, so we changed to identify the input music in real time.
+We use aubio\cite{aubio_cite}, an open source code, for identification. The original topic was expected to use existing music for identification, but the results of the experiment were not good, so we changed to identify the input music in real time.
 
-We use pyaudio to receive the microphone signal from the computer, and then use aubio to determine the pitch of the input sound, and then aubio will convert the sound to a MIDI Number, and finally we will compare it with the notes of the score.
+We use pyaudio\cite{pyaudio_cite} to receive the microphone signal from the computer. 
+And we use aubio to determine the pitch of the input sound, then aubio will convert the sound to a MIDI Number.
+Finally we will compare the MIDI number with the notes of the score.
 
 %---------------------------------- --------------------------------------
 \section{Experimental results}
@@ -189,6 +191,8 @@ We divide the scores of each sheet into different lines and display them on the 
 \subsection{System Framework}
 
 Our experimental architecture is shown in the figure(Figure ~\ref{fig:system_framework}).
+We read the tablature in PDF format and change them into png format. When inputting music later, we analyse the pitch. Once our system finds the input music matching the note on the tablature, it would scroll the tablature.
+
 
 \subsection{GUI usage}
 
@@ -200,28 +204,33 @@ Our experimental architecture is shown in the figure(Figure ~\ref{fig:system_fra
 \label{fig:gui}
 \end{figure}
 
-How to use the GUI is explained by numbers (Figure ~\ref{fig:gui}).
+Following explains how to use the GUI (Figure ~\ref{fig:gui}).
 
 \begin{description}
-\item 1. The red circle indicates which note is currently.
-\item 2. Show the current score.
-\item 3. Back the red circle one space.
-\item 4. Move the red circle one step forward.
-\item 5. Start to recognize the music mode.
-\item 6. Stop recognizing music mode.
+    \item 1. The red circle indicates which note is currently.
+    \item 2. Show the current score.
+    \item 3. Back the red circle one space.
+    \item 4. Move the red circle one step forward.
+    \item 5. Start to recognize the music mode.
+    \item 6. Stop recognizing music mode.
 \end{description}
 
-When the red circle moves to the end of the score, it will automatically switch to the next page, and you can use the “back” and “next” buttons to manually move the position of the red circle.
+When the red circle moves to the end of the score, it will automatically switch to the next page, and you can use the \emph{back} and \emph{next} buttons to manually move the position of the red circle.
 
 Music recognition mode can recognize the input music and automatically change the position of the red circle.
 
 %------------------------------------------------------------------------
 \section{Conclusion}
 
-When recognizing pitch, aubio uses 'confidence' as the basis for judging whether it is a note, but from the perspective of human hearing, some notes do not exist, or clearly exist but “confidence” is much lower than other notes' 'confidence'.
+When recognizing pitch, aubio uses \emph{confidence} as the basis for judging whether it is a note, but from the perspective of human hearing, some notes do not exist, or clearly exist but \emph{confidence} is much lower than other notes' \emph{confidence}.
 
-Although our program can recognize music notes, it is still affected by other sounds, such as environmental sounds or human voices. In the pitch recognition part, we still need more room for improvement. In addition, if the GUI can provide more Multi-line music scores should be able to be closer to the needs of users.
+Although our program can recognize music notes, it is still affected by other sounds, such as environmental sounds or human voices. In the pitch recognition part, we still have more room for improvement. 
 
+We developed a software that can just listen to sound of guitar and scroll the tablature while it got a correct note.
+{\small
+    \bibliographystyle{ieee_fullname}
+    \bibliography{egbib}
+}
 
 \end{CJK}
 \end{document}
